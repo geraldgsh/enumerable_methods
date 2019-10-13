@@ -98,7 +98,7 @@ module Enumerable
   # TEST my_count
   # p ["one", "two", "three", "four", "five"].my_count
 
-  # Task no.8 (This iteration takes a block)  
+  # Task no.8 (This iteration takes a block)
   def my_map_first
     arr = []
     my_each do |i|
@@ -131,7 +131,6 @@ module Enumerable
   # TEST my_map_second
   my_proc = proc { |x| x * 3 }
   p [1, 2, 3, 4, 5].my_map_second(&my_proc)
-
 end
 
 # Task no.10
