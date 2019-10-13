@@ -45,4 +45,16 @@ module Enumerable
   # p num.my_select { |x| x.even? }
   # p num
 
+  # Task no.4
+  def my_all?
+    my_each do |i|
+      return false if yield(self[i]) == false || yield(self[i]).nil?
+    end
+    true
+  end
+
+  # TEST FOR my_all?
+  # num = [1, 2, 3, 4, 5]
+  # p num.my_all? { |x| x > 6}
+
 end
