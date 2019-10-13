@@ -31,4 +31,18 @@ module Enumerable
   #   puts "#{i}. #{x}"
   # end
 
+  # Task no.3
+  def my_select
+    new_array = []
+    my_each do |i|
+      new_array << i if yield(i)
+    end
+    new_array
+  end
+
+  # TEST FOR my_select
+  # num = [1, 2, 3, 4, 5, 6, 7, 8]
+  # p num.my_select { |x| x.even? }
+  # p num
+
 end
