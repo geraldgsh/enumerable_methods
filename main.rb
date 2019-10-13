@@ -119,6 +119,19 @@ module Enumerable
     mem
   end
 
+  # Task no.11 & 12 (Takes a PROC)
+  def my_map_second
+    arr = []
+    my_each do |i|
+      arr << yield(i)
+    end
+    arr
+  end
+
+  # TEST my_map_second
+  my_proc = proc { |x| x * 3 }
+  p [1, 2, 3, 4, 5].my_map_second(&my_proc)
+
 end
 
 # Task no.10
