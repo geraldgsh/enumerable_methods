@@ -57,4 +57,16 @@ module Enumerable
   # num = [1, 2, 3, 4, 5]
   # p num.my_all? { |x| x > 6}
 
+  # Task no.5
+  def my_any?
+    my_each do |f|
+      return true if yield(f)
+    end
+    false
+  end
+
+  # TEST FOR #my_any?
+  # num = [1, 2, 3, 4, 5, 6]
+  # p num.my_any? { |x| x == 2 }
+
 end
