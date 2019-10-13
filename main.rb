@@ -120,3 +120,11 @@ module Enumerable
   end
 
 end
+
+# Task no.10
+def multiply_els(arr)
+  arr.my_inject { |sum, x| sum * x }
+end
+
+# TEST multiply_els
+p multiply_els([2, 4, 5])
