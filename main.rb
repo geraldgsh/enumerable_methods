@@ -98,6 +98,16 @@ module Enumerable
   # TEST my_count
   # p ["one", "two", "three", "four", "five"].my_count
 
-  # Task no.8 (This iteration takes a block)
+  # Task no.8 (This iteration takes a block)  
+  def my_map_first
+    arr = []
+    my_each do |i|
+      arr << yield(i)
+    end
+    arr
+  end
+
+  # TEST my_map_first
+  # p ["11", "21", "5", "23", "19"].my_map { |str| str.to_i }
 
 end
