@@ -84,4 +84,20 @@ module Enumerable
   # p numbers.my_none? {|x| x.is_a?(String) }
   # p numbers.my_none? {|x| x == 1 }
 
+  # Task no.7
+  def my_count
+    count = 0
+    my_each do |i|
+      count += 1
+      return count if block_given? && yield(self[i])
+      'No block given'
+    end
+    count
+  end
+
+  # TEST my_count
+  # p ["one", "two", "three", "four", "five"].my_count
+
+  # Task no.8 (This iteration takes a block)
+
 end
