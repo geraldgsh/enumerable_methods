@@ -110,4 +110,13 @@ module Enumerable
   # TEST my_map_first
   # p ["11", "21", "5", "23", "19"].my_map { |str| str.to_i }
 
+  # Task no.9
+  def my_inject(_initial = nil)
+    mem = self[0]
+    my_each do |e|
+      mem = yield(mem, e)
+    end
+    mem
+  end
+
 end
