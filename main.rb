@@ -69,4 +69,19 @@ module Enumerable
   # num = [1, 2, 3, 4, 5, 6]
   # p num.my_any? { |x| x == 2 }
 
+  # Task no.6
+  def my_none?
+    i = 0
+    while self[i]
+      return false if yield(self[i])
+      i += 1
+    end
+    true
+  end
+
+  # TEST my_none
+  # numbers = [1, 2, 3, 4, 5]
+  # p numbers.my_none? {|x| x.is_a?(String) }
+  # p numbers.my_none? {|x| x == 1 }
+
 end
