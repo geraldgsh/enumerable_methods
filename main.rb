@@ -11,7 +11,6 @@ module Enumerable
       end
       self
     else
-
       to_enum(:my_each)
     end
   end
@@ -67,7 +66,6 @@ module Enumerable
       true
     else
       to_enum(:my_all?)
-      'No block given!'
     end
   end
 
@@ -118,8 +116,7 @@ module Enumerable
       count += 1
       return count if block_given? && yield(self[i])
 
-
-      to_enum(:my_count)
+      to_enum(:my_each)
     end
     count
   end
@@ -144,7 +141,8 @@ module Enumerable
   # p ["11", "21", "5", "23", "19"].my_map_first { |str| str.to_i }
 
   # Task no.9
-  def my_inject(initial = nil)
+
+  def my_inject(_initial = nil)
     mem = initial
     my_each do |e|
       mem = if mem.nil?
