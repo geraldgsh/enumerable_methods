@@ -115,7 +115,6 @@ module Enumerable
     my_each do |i|
       count += 1
       return count if block_given? && yield(self[i])
-
       to_enum(:my_each)
     end
     count
@@ -141,7 +140,7 @@ module Enumerable
   # p ["11", "21", "5", "23", "19"].my_map_first { |str| str.to_i }
 
   # Task no.9
-  def my_inject(_initial = nil)
+  def my_inject(initial = nil)
     mem = initial
     my_each do |e|
       mem = if mem.nil?
@@ -177,4 +176,5 @@ def multiply_els(arr)
 end
 
 # TEST multiply_els
+# p multiply_els([2, 4, 5])
 # p multiply_els([2, 4, 5])
