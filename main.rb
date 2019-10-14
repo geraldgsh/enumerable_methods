@@ -61,8 +61,7 @@ module Enumerable
   def my_all?
     if block_given?
       my_each do |i|
-        return false if yield(self[i]) == false || yield(self[i]).nil?
-      end
+        if yield(self[i]) != false || yield(self[i]).nil?
       true
     else
       to_enum(:my_all?)
@@ -70,8 +69,8 @@ module Enumerable
   end
 
   # TEST FOR my_all?
-  # num = [1, 2, 3, 4, 5]
-  # p num.my_all? { |x| x > 6}
+  num = [1, 2, 3, 4, 5]
+  p num.my_all? { |x| x > 6}
 
   # Task no.5
   def my_any?
