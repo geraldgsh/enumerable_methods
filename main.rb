@@ -11,7 +11,8 @@ module Enumerable
       end
       self
     else
-      'Block not given!'
+
+      to_enum(:my_each)
     end
   end
 
@@ -30,7 +31,7 @@ module Enumerable
       end
       self
     else
-      'Block not given!'
+      to_enum(:my_each_with_index)
     end
   end
 
@@ -48,7 +49,7 @@ module Enumerable
       end
       new_array
     else
-      'Block not given'
+      to_enum(:my_select)
     end
   end
 
@@ -65,6 +66,7 @@ module Enumerable
       end
       true
     else
+      to_enum(:my_all?)
       'No block given!'
     end
   end
@@ -81,7 +83,7 @@ module Enumerable
       end
       false
     else
-      'Block not given!'
+      to_enum(:my_any?)
     end
   end
 
@@ -100,7 +102,7 @@ module Enumerable
       end
       true
     else
-      'Block not given'
+      to_enum(:my_none?)
     end
   end
 
@@ -116,7 +118,8 @@ module Enumerable
       count += 1
       return count if block_given? && yield(self[i])
 
-      'No block given'
+
+      to_enum(:my_count)
     end
     count
   end
@@ -133,7 +136,7 @@ module Enumerable
       end
       arr
     else
-      'Block not given'
+      to_enum(:my_map_first)
     end
   end
 
@@ -162,7 +165,7 @@ module Enumerable
       end
       arr
     else
-      'Block not given'
+      to_enum(:my_map_second)
     end
   end
 
@@ -177,4 +180,4 @@ def multiply_els(arr)
 end
 
 # TEST multiply_els
-p multiply_els([2, 4, 5])
+# p multiply_els([2, 4, 5])
