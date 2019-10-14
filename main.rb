@@ -3,27 +3,35 @@
 module Enumerable
   # Task no.1
   def my_each
-    i = 0
-    while self[i]
-      yield(self[i])
-      i += 1
+    if block_given?
+      i = 0
+      while self[i]
+        yield(self[i])
+        i += 1
+      end
+      self
+    else
+      to_enum(:my_each)
     end
-    self
   end
 
   # # TEST FOR #my_each
-  # [1,2,3,4].my_each do |x|
+  # [1, 2, 3, 4].my_each do |x|
   #   puts "#{x}"
   # end
 
   # Task no.2
   def my_each_with_index
-    i = 0
-    while self[i]
-      yield(self[i], i)
-      i += 1
+    if block_given?
+      i = 0
+      while self[i]
+        yield(self[i], i)
+        i += 1
+      end
+      self
+    else
+      to_enum(:my_each_with_index)
     end
-    self
   end
 
   # TEST FOR #my_each_with_index
@@ -33,11 +41,15 @@ module Enumerable
 
   # Task no.3
   def my_select
-    new_array = []
-    my_each do |i|
-      new_array << i if yield(i)
+    if block_given?
+      new_array = []
+      my_each do |i|
+        new_array << i if yield(i)
+      end
+      new_array
+    else
+      to_enum(:my_select)
     end
-    new_array
   end
 
   # TEST FOR my_select
@@ -47,10 +59,14 @@ module Enumerable
 
   # Task no.4
   def my_all?
-    my_each do |i|
-      return false if yield(self[i]) == false || yield(self[i]).nil?
+    if block_given?
+      my_each do |i|
+        return false if yield(self[i]) == false || yield(self[i]).nil?
+      end
+      true
+    else
+      to_enum(:my_all?)
     end
-    true
   end
 
   # TEST FOR my_all?
@@ -59,10 +75,14 @@ module Enumerable
 
   # Task no.5
   def my_any?
-    my_each do |f|
-      return true if yield(f)
+    if block_given?
+      my_each do |f|
+        return true if yield(f)
+      end
+      false
+    else
+      to_enum(:my_any?)
     end
-    false
   end
 
   # TEST FOR #my_any?
@@ -71,13 +91,17 @@ module Enumerable
 
   # Task no.6
   def my_none?
-    i = 0
-    while self[i]
-      return false if yield(self[i])
+    if block_given?
+      i = 0
+      while self[i]
+        return false if yield(self[i])
 
-      i += 1
+        i += 1
+      end
+      true
+    else
+      to_enum(:my_none?)
     end
-    true
   end
 
   # TEST my_none
@@ -92,7 +116,7 @@ module Enumerable
       count += 1
       return count if block_given? && yield(self[i])
 
-      'No block given'
+      to_enum(:my_each)
     end
     count
   end
@@ -102,37 +126,49 @@ module Enumerable
 
   # Task no.8 (This iteration takes a block)
   def my_map_first
-    arr = []
-    my_each do |i|
-      arr << yield(i)
+    if block_given?
+      arr = []
+      my_each do |i|
+        arr << yield(i)
+      end
+      arr
+    else
+      to_enum(:my_map_first)
     end
-    arr
   end
 
   # TEST my_map_first
-  # p ["11", "21", "5", "23", "19"].my_map { |str| str.to_i }
+  # p ["11", "21", "5", "23", "19"].my_map_first { |str| str.to_i }
 
   # Task no.9
   def my_inject(_initial = nil)
-    mem = self[0]
+    mem = initial
     my_each do |e|
-      mem = yield(mem, e)
+      mem = if mem.nil?
+              e
+            else
+              yield(mem, e)
+            end
     end
     mem
   end
 
   # Task no.11 & 12 (Takes a PROC)
   def my_map_second
-    arr = []
-    my_each do |i|
-      arr << yield(i)
+    if block_given?
+      arr = []
+      my_each do |i|
+        arr << yield(i)
+      end
+      arr
+    else
+      to_enum(:my_map_second)
     end
-    arr
   end
 
   # TEST my_map_second
-  my_proc = proc { |x| x * 3 }
-  p [1, 2, 3, 4, 5].my_map_second(&my_proc)
+  # my_proc = proc { |x| x * 3 }
+  # p [1, 2, 3, 4, 5].my_map_second(&my_proc)
 end
 
 # Task no.10
@@ -141,4 +177,4 @@ def multiply_els(arr)
 end
 
 # TEST multiply_els
-p multiply_els([2, 4, 5])
+# p multiply_els([2, 4, 5])
