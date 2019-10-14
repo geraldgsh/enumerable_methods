@@ -11,11 +11,12 @@ module Enumerable
       end
       self
     else
+
       to_enum(:my_each)
     end
   end
 
-  # TEST FOR #my_each
+  # # TEST FOR #my_each
   # [1, 2, 3, 4].my_each do |x|
   #   puts "#{x}"
   # end
@@ -66,6 +67,7 @@ module Enumerable
       true
     else
       to_enum(:my_all?)
+      'No block given!'
     end
   end
 
@@ -115,6 +117,7 @@ module Enumerable
     my_each do |i|
       count += 1
       return count if block_given? && yield(self[i])
+
 
       to_enum(:my_count)
     end
