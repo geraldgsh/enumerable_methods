@@ -74,6 +74,7 @@ module Enumerable
     i = 0
     while self[i]
       return false if yield(self[i])
+
       i += 1
     end
     true
@@ -90,6 +91,7 @@ module Enumerable
     my_each do |i|
       count += 1
       return count if block_given? && yield(self[i])
+
       'No block given'
     end
     count
