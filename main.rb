@@ -141,6 +141,7 @@ module Enumerable
   # p ["11", "21", "5", "23", "19"].my_map_first { |str| str.to_i }
 
   # Task no.9
+
   def my_inject(_initial = nil)
     mem = initial
     my_each do |e|
