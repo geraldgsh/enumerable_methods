@@ -54,117 +54,176 @@ module Enumerable
 
   # TEST FOR my_select
   # num = [1, 2, 3, 4, 5, 6, 7, 8]
-  # p num.my_select { |x| x.even? }
+  # p(num5re .my_select { |x| x.even? })
   # p num
 
   # Task no.4
   def my_all?
-    if block_given?
-      my_each do |i|
-        return false if yield(self[i]) == false || yield(self[i]).nil?
+    return my_all?.to_enum unless block_given?
+
+    check = true
+    if self.class == hash
+      my_each do |k, v|
+        check = false unless yield(k, v)
       end
-      true
+    elsif self.class == Regexp
+      my_each do |x|
+        check = false unless yield(x)
+      end
+    elsif self.class == Class
+      my_each do |y|
+        check = false unless yield(y)
+      end
     else
-      to_enum(:my_all?)
+      my_each do |z|
+        check = false unless yield(z)
+      end
     end
+    check
   end
 
   # TEST FOR my_all?
-  # num = [1, 2, 3, 4, 5]
-  # p num.my_all? { |x| x > 6}
+  # p([1, 2, 3, 4, 5].my_all? { |x| x < 6 })
 
   # Task no.5
   def my_any?
-    if block_given?
-      my_each do |f|
-        return true if yield(f)
+    return my_any?.to_enum unless block_given?
+
+    check = false
+    if self.class == hash
+      my_each do |k, v|
+        check = true if yield(k, v)
       end
-      false
+    elsif self.class == Regexp
+      my_each do |x|
+        check = true if yield(x)
+      end
+    elsif self.class == Class
+      my_each do |y|
+        check = true if yield(y)
+      end
     else
-      to_enum(:my_any?)
+      my_each do |z|
+        check = true if yield(z)
+      end
     end
+    check
   end
 
   # TEST FOR #my_any?
-  # num = [1, 2, 3, 4, 5, 6]
-  # p num.my_any? { |x| x == 2 }
+  # p([1, 2, 3, 4, 5, 6].my_any? { |a| a == 9 })
 
   # Task no.6
   def my_none?
-    if block_given?
-      i = 0
-      while self[i]
-        return false if yield(self[i])
+    return to_enum(:my_none) unless block_given?
 
-        i += 1
+    check = true
+    if self.class == hash
+      my_each do |k, v|
+        check = false if yield(k, v)
       end
-      true
+    elsif self.class == Regexp
+      my_each do |x|
+        check = false if yield(x)
+      end
+    elsif self.class == Class
+      my_each do |y|
+        check = false if yield(y)
+      end
     else
-      to_enum(:my_none?)
+      my_each do |z|
+        check = false if yield(z)
+      end
     end
+    check
   end
 
   # TEST my_none
-  # numbers = [1, 2, 3, 4, 5]
-  # p numbers.my_none? {|x| x.is_a?(String) }
-  # p numbers.my_none? {|x| x == 1 }
+  # p([1, 2, 3, 4, 5].my_none? { |x| x.is_a?(Integer) })
+  # p([1, 2, 3, 4, 5].my_none? { |x| x == 9 })
 
   # Task no.7
   def my_count
-    count = 0
-    my_each do |i|
-      count += 1
-      return count if block_given? && yield(self[i])
+    return to_enum(:my_count) unless block_given?
 
-      to_enum(:my_each)
+    count = 0
+    if self.class == Hash
+      my_each do |k, v|
+        count += 1 if yield(k, v)
+      end
+    else
+      my_each do |x|
+        count += 1 if yield(x)
+      end
     end
     count
   end
 
   # TEST my_count
-  # p ["one", "two", "three", "four", "five"].my_count
+  # strings = ["one", "two", "three", "four"]
+  # p strings.my_count { |x| x }
 
   # Task no.8 (This iteration takes a block)
   def my_map_first
-    if block_given?
-      arr = []
-      my_each do |i|
-        arr << yield(i)
+    arr = []
+    if self.class == Hash && block_given?
+      my_each do |k, v|
+        arr << yield(k, v)
       end
-      arr
+    elsif self.class == Array && block_given?
+      my_each do |x|
+        arr << yield(x)
+      end
     else
-      to_enum(:my_map_first)
+      return to_enum(:my_map_first)
     end
+    arr
   end
 
   # TEST my_map_first
-  # p ["11", "21", "5", "23", "19"].my_map_first { |str| str.to_i }
+  # p(%w[11 21 5 23 19].my_map_first { |str| str &.to_i })
 
   # Task no.9
-
-  def my_inject(_initial = nil)
-    mem = initial
-    my_each do |e|
-      mem = if mem.nil?
-              e
-            else
-              yield(mem, e)
-            end
+  def my_inject(init = nil, symbol = nil)
+    if !init.nil? && !symbol.nil?
+      my_each { |num| init = init.method(symbol).call(num) }
+      init
+    elsif !init.nil? && init.is_a?(Symbol) && !symbol.nil?
+      memo, *remaining_ele = self
+      remaining_ele.my_each { |num| memo = memo.method(init).call(num) }
+      memo
+    elsif !init.nil? && init.is_a?(Integer) && symbol.nil?
+      my_each { |num| init = yield(init, num) }
+      init
+    elsif init.nil? && symbol.nil?
+      init, *remaining_ele = self
+      remaining_ele.my_each { |num| init = yield(init, num) }
+      init
     end
-    mem
   end
+
+  # TESTS FOR
+  # my_inject
+  # p [2, 4, 5].my_inject(1, :+)
+  # p [2, 4, 5].my_inject(:*)
+  # p [2, 4, 5].my_inject(2) { |memo, n| memo + n }
+  # p [2, 4, 5].my_inject { |memo, n| memo + n }
 
   # Task no.11 & 12 (Takes a PROC)
   def my_map_second
-    if block_given?
-      arr = []
-      my_each do |i|
-        arr << yield(i)
+    arr = []
+    if self.class == Hash && block_given?
+      my_each do |k, v|
+        arr << yield(k, v)
       end
-      arr
+    elsif self.class == Array && block_given?
+      my_each do |x|
+        arr << yield(x)
+      end
     else
-      to_enum(:my_map_second)
+      return to_enum(:my_map_first)
     end
+    arr
   end
 
   # TEST my_map_second
