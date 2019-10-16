@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Enumerable
-  # Task no.1
+# Task no.1
+module Enumerable # rubocop:disable Metrics/ModuleLength
   def my_each
     if block_given?
       i = 0
@@ -118,7 +118,7 @@ module Enumerable
     true
   end
 
-  # rubocop:enable
+  # rubocop:enable  Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   # TEST my_none
   # p([1, 2, 3, 4, 5].my_none? { |x| x.is_a?(String) })
   # p([1, 2, 3, 4, 5].my_none? { |x| x == 9 })
@@ -137,7 +137,7 @@ module Enumerable
   end
 
   # TEST my_count
-  p(%w[one two three four five].my_count { |x| x })
+  # p(%w[one two three four five].my_count { |x| x })
 
   # Task no.8 (This iteration takes a block)
   def my_map_first
@@ -160,6 +160,7 @@ module Enumerable
   # p(%w[11 21 5 23 19].my_map_first { |str| str &.to_i })
 
   # Task no.9
+  # rubocop:disable  Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def my_inject(init = nil, symbol = nil)
     if !init.nil? && !symbol.nil?
       my_each { |num| init = init.method(symbol).call(num) }
@@ -178,6 +179,7 @@ module Enumerable
     end
   end
 
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   # TESTS FOR
   # my_inject
   # p [2, 4, 5].my_inject(1, :+)
