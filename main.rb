@@ -58,110 +58,86 @@ module Enumerable
   # p num
 
   # Task no.4
-  def my_all?
-    return my_all?.to_enum unless block_given?
-
-    check = true
-    if self.class == hash
-      my_each do |k, v|
-        check = false unless yield(k, v)
-      end
-    elsif self.class == Regexp
-      my_each do |x|
-        check = false unless yield(x)
-      end
-    elsif self.class == Class
-      my_each do |y|
-        check = false unless yield(y)
-      end
+  # rubocop:disable  Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  def my_all?(arg = nil)
+    if block_given?
+      my_each { |i| return false unless yield(i) }
+    elsif arg == Hash
+      my_each { |k, v| return false unless yield(k, v) }
+    elsif arg.class == Class
+      my_each { |w| return false unless yield(w) }
+    elsif arg.class == Regexp
+      my_each { |x| return false unless x =~ arg }
+    elsif arg.nil?
+      my_each { |y| return false unless y }
     else
-      my_each do |z|
-        check = false unless yield(z)
-      end
+      my_each { |z| return false unless z == arg }
     end
-    check
+    true
   end
 
   # TEST FOR my_all?
   # p([1, 2, 3, 4, 5].my_all? { |x| x < 6 })
 
   # Task no.5
-  def my_any?
-    return my_any?.to_enum unless block_given?
-
-    check = false
-    if self.class == hash
-      my_each do |k, v|
-        check = true if yield(k, v)
-      end
-    elsif self.class == Regexp
-      my_each do |x|
-        check = true if yield(x)
-      end
-    elsif self.class == Class
-      my_each do |y|
-        check = true if yield(y)
-      end
+  def my_any?(arg = nil)
+    if block_given?
+      my_each { |i| return true if yield(i) }
+    elsif arg == Hash
+      my_each { |k, v| return true if yield(k, v) }
+    elsif arg.class == Class
+      my_each { |w| return true if yield(w) }
+    elsif arg.class == Regexp
+      my_each { |x| return true if x =~ arg }
+    elsif arg.nil?
+      my_each { |y| return true if y }
     else
-      my_each do |z|
-        check = true if yield(z)
-      end
+      my_each { |z| return true if z == arg }
     end
-    check
+    false
   end
 
   # TEST FOR #my_any?
-  # p([1, 2, 3, 4, 5, 6].my_any? { |a| a == 9 })
+  # p([1, 2, 3, 4, 5, 6].my_any? { |a| a == 1 })
 
   # Task no.6
-  def my_none?
-    return to_enum(:my_none) unless block_given?
-
-    check = true
-    if self.class == hash
-      my_each do |k, v|
-        check = false if yield(k, v)
-      end
-    elsif self.class == Regexp
-      my_each do |x|
-        check = false if yield(x)
-      end
-    elsif self.class == Class
-      my_each do |y|
-        check = false if yield(y)
-      end
+  def my_none?(arg = nil)
+    if block_given?
+      my_each { |i| return false if yield(i) }
+    elsif arg == Hash
+      my_each { |k, v| return false if yield(k, v) }
+    elsif arg.class == Class
+      my_each { |w| return false if yield(w) }
+    elsif arg.class == Regexp
+      my_each { |x| return false if x =~ arg }
+    elsif arg.nil?
+      my_each { |y| return false if y }
     else
-      my_each do |z|
-        check = false if yield(z)
-      end
+      my_each { |z| return false if z == arg }
     end
-    check
+    true
   end
 
+  # rubocop:enable
   # TEST my_none
-  # p([1, 2, 3, 4, 5].my_none? { |x| x.is_a?(Integer) })
+  # p([1, 2, 3, 4, 5].my_none? { |x| x.is_a?(String) })
   # p([1, 2, 3, 4, 5].my_none? { |x| x == 9 })
 
   # Task no.7
-  def my_count
-    return to_enum(:my_count) unless block_given?
-
+  def my_count(ele = nil)
     count = 0
-    if self.class == Hash
-      my_each do |k, v|
-        count += 1 if yield(k, v)
-      end
+    if block_given?
+      my_each { |i| count += 1 if yield(i) }
+    elsif ele.nil?
+      my_each { count += 1 }
     else
-      my_each do |x|
-        count += 1 if yield(x)
-      end
+      my_each { count += 1 if i == arg }
     end
     count
   end
 
   # TEST my_count
-  # strings = ["one", "two", "three", "four"]
-  # p strings.my_count { |x| x }
+  p(%w[one two three four five].my_count { |x| x })
 
   # Task no.8 (This iteration takes a block)
   def my_map_first
