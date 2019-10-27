@@ -35,6 +35,8 @@ Create The Enumerable module that provides a set of methods to traverse, search,
 
 13. Add "returns an enumerator if no block is given" for most methods
 
+14. In spec folder, run "rspec main_spec.rb" to test enumerable methods
+
 Quick Tips:
 
 Remember yield and the #call method.
