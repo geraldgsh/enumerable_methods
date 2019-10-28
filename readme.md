@@ -1,5 +1,5 @@
 # Microverse Project Title - Advanced Building Blocks - Enumerables [Solo Project]
-Ruby Programming: Advanced Bui;ding Blocks
+Ruby Programming: Advanced Building Blocks
 
 ## Introduction.
 In this project, implement your own version of Ruby’s enumerable methods.
